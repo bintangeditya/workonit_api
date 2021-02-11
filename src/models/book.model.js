@@ -21,6 +21,19 @@ Book.getBookByIdUser = (id_user, result)=>{
     })
 }
 
+
+Book.getBookByIdUserIdBook = (id_user,id_book ,result)=>{
+    console.log('getBookByIdUserIdBook');
+    dbConn.query('SELECT * FROM `book` NATURAL JOIN book_user WHERE id_user =? AND book.id_book =?', [id_user,id_book], (err, res)=>{
+        if(err){
+            console.log(err);
+            result(true, err);
+        }else{
+            result(null, res);
+        }
+    })
+}
+
 Book.createBook = (bookReqData, result) =>{
     console.log('createBook');
     dbConn.query('INSERT INTO book SET ? ', bookReqData, (err, res)=>{

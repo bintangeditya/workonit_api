@@ -5,7 +5,7 @@ exports.getTaskByIdBookIdUser = (req, res)=>{
     console.log('getTaskByIdBookIdUser');
     TaskModel.getTaskByIdBookIdUser(req.params.id_book,req.params.id_user, (err, tasks)=>{
         if(err) 
-        res.json({status: false, message: 'Problem'});
+        res.json({status: false, message: 'Gagal'});
         res.json({status: true, message: 'Success', data: tasks});
     })
 }
@@ -17,7 +17,7 @@ exports.createTask= (req, res)=>{
     TaskModel.createTask(taskReqData,(err,resTask)=>{
         if(err){
             console.log(err);
-            res.json({status: false, message: 'Problem'});
+            res.json({status: false, message: 'Gagal'});
         }else{
             const userTaskReqData = new TaskUserModel({})
             userTaskReqData.id_task = resTask.insertId
@@ -26,7 +26,7 @@ exports.createTask= (req, res)=>{
             TaskUserModel.createTaskUser(userTaskReqData,(err,resUserTask)=>{
                 if(err){
                     console.log(err);
-                    res.json({status: false, message: 'Problem'});
+                    res.json({status: false, message: 'Gagal'});
                 }else{
                     res.json({status: true, message: 'Success'});
                 }

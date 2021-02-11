@@ -9,7 +9,7 @@ exports.getBookByIdUser = (req, res)=>{
     console.log('getBookByIdUser');
     BookModel.getBookByIdUser(req.params.id_user, (err, books)=>{
         if(err) 
-        res.json({status: false, message: 'Problem'});
+        res.json({status: false, message: 'Gagal'});
         res.json({status: true, message: 'Success', data: books});
     })
 }
@@ -25,16 +25,21 @@ exports.createBook = (req, res)=>{
     BookModel.createBook(bookReqData, (err, resBook)=>{
         if(err){
             console.log('bookReqData', err);
-            res.json({status: false, message: 'Problem'});
+            res.json({status: false, message: 'Gagal'});
         }else{
             userbookReqData.id_book = resBook.insertId 
             console.log('userbookReqData', userbookReqData);
             UserBook.createUserBook(userbookReqData, (err, resUserBook)=>{
                 if(err){
                     console.log('userbookReqData', err);
-                    res.json({status: false, message: 'Problem'});
+                    res.json({status: false, message: 'Gagal'});
                 }else{
-                    res.json({status: true, message: 'Success'});
+                    BookModel.getBookByIdUserIdBook(req.body.id_user,resBook.insertId, (err, books2)=>{
+                        if(err) 
+                        res.json({status: false, message: 'Gagal'});
+                        res.json({status: true, message: 'Success', data: books2});
+                    })
+
                 } 
             })  
         }
@@ -45,30 +50,40 @@ exports.joinBook = (req, res)=>{
     console.log(req.body)
     BookModel.getBookByIdBook(req.body.id_book, (err, books)=>{
         if(err) 
-        res.json({status: false, message: 'Problem'});
+            res.json({status: false, message: 'Gagal'});
         if(!Object.keys(books).length)
-        res.json({status: false, message: 'Id Book not found'});
+            res.json({status: false, message: 'Id Book tidak ditemukan'});
         if(books[0].type == 'private')
-        res.json({status: false, message: 'Book is private'});
-        const reqUserBook = new UserBook(req.body)
-        reqUserBook.mute = 0
-        reqUserBook.status = 'member'
-        UserBook.createUserBook(reqUserBook, (err,books)=>{
-            if(err)
-            res.json({status: false, message: 'Problem'});
-            res.json({status: true, message: 'Success'});
+            res.json({status: false, message: 'Book bertipe "private"'});
+        UserBook.getUserBookByIdUserIdBook(req.body.id_user,req.body.id_book,(err,userBook)=>{
+            if(err) 
+            res.json({status: false, message: 'Gagal'});
+            if(!Object.keys(userBook).length){
+                const reqUserBook = new UserBook(req.body)
+                reqUserBook.mute = 0
+                reqUserBook.status = 'member'
+                UserBook.createUserBook(reqUserBook, (err,createUserBookRes)=>{
+                    if(err)
+                    res.json({status: false, message: 'Gagal'});
+                    BookModel.getBookByIdUserIdBook(req.body.id_user,req.body.id_book, (err, books2)=>{
+                        if(err) 
+                        res.json({status: false, message: 'Gagal'});
+                        res.json({status: true, message: 'Success', data: books2});
+                    })
+                })
+            }else
+                res.json({status: false, message: 'Anda telah bergabung dengan Book'});
         })
-        
     })
 }
 
 exports.getDetailBook = (req, res)=>{
     BookModel.getBookByIdBookIdUser(req.params.id_book,req.params.id_user, (err, books)=>{
         if(err) 
-        res.json({status: false, message: 'Problem'});
+        res.json({status: false, message: 'Gagal'});
         UserModel.getUserByIdBook(req.params.id_book, (err, users)=>{
             if(err) 
-            res.json({status: false, message: 'Problem'});
+            res.json({status: false, message: 'Gagal'});
             const book = books[0]
             book.member = users
             res.json({status: true, message: 'Success', data: book});
@@ -83,7 +98,7 @@ exports.updateBook = (req, res) =>{
     console.log('req.body',req.body)
     BookModel.updateBook(bookReqData,(err,books)=>{
         if(err) 
-        res.json({status: false, message: 'Problem'});
+        res.json({status: false, message: 'Gagal'});
         res.json({status: true, message: 'Success'});
     })
 }
@@ -91,7 +106,7 @@ exports.updateBook = (req, res) =>{
 exports.deleteBook = (req,res) =>{
     BookModel.deleteBook(req.params.id_book, (err, books)=>{
         if(err)
-        res.json({status: false, message: 'Problem'});
+        res.json({status: false, message: 'Gagal'});
         res.json({status:true, message: 'Success'});
     })
 }
@@ -99,7 +114,7 @@ exports.deleteBook = (req,res) =>{
 exports.unjoinBook = (req,res) =>{
     UserBook.deleteUserBook(req.params.id_book_user, (err, userbooks)=>{
         if(err)
-        res.json({status: false, message: 'Problem'});
+        res.json({status: false, message: 'Gagal'});
         res.json({status:true, message: 'Success'});
     })
 
@@ -111,7 +126,7 @@ exports.updateUserBook = (req, res) =>{
     console.log('req.body',req.body)
     UserBookModel.updateUserBook(userBookReqData,(err,books)=>{
         if(err) 
-        res.json({status: false, message: 'Problem'});
+        res.json({status: false, message: 'Gagal'});
         res.json({status: true, message: 'Success'});
     })
 }

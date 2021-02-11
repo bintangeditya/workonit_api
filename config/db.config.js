@@ -3,6 +3,10 @@ const mysql = require('mysql');
 // create here mysql connection
 
 const dbConn = mysql.createConnection({
+    // host: 'localhost',
+    // user: 'root',
+    // password: '',
+    // database: 'workonit_db'
     host: 'db4free.net',
     user: 'workonit',
     password: 'workonit',

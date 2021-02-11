@@ -8,6 +8,17 @@ var UserBook = function(userBook){
     this.status               =   userBook.status;
 }
 
+UserBook.getUserBookByIdUserIdBook = (idUser,idBook, result)=>{
+    dbConn.query('SELECT * FROM book_user WHERE id_user=? AND id_book=?', [idUser,idBook], (err, res)=>{
+        if(err){
+            console.log('Error : getUserBookByIdUserIdBook', err);
+            result(true, err);
+        }else{
+            result(null, res);
+        }
+    })
+}
+
 
 UserBook.createUserBook = (userBookReqData, result) =>{
     console.log('createUserBook');
