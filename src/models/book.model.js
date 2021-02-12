@@ -6,7 +6,6 @@ var Book = function(book){
     this.title          =   book.title;
     this.description    =   book.description;
     this.type           =   book.type;
-    this.member           =   book.member;
 }
 
 

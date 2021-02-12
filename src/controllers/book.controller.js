@@ -3,6 +3,7 @@ const BookModel = require('../models/book.model');
 const UserModel = require('../models/user.model');
 const UserBook = require('../models/userBook.model');
 const UserBookModel = require('../models/userBook.model');
+const BookMemberModel = require('../models/bookmember.model');
 
 
 exports.getBookByIdUser = (req, res)=>{
@@ -86,8 +87,9 @@ exports.getDetailBook = (req, res)=>{
             if(err) 
             res.json({status: false, message: 'Gagal'});
             const book = books[0]
-            book.member = users
-            res.json({status: true, message: 'Success', data: book});
+            const bookMember = new BookMemberModel(book)
+            bookMember.member = users
+            res.json({status: true, message: 'Success', data: bookMember});
         })
         
     })
