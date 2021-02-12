@@ -60,6 +60,19 @@ Task.deleteTask =   (id_task, result)=>{
     })
 }
 
+Task.getDetailTask = (id_task, result)=>{
+    console.log('getDetailTask');
+    dbConn.query('SELECT * FROM task WHERE id_task =?', id_task, (err, res)=>{
+        if(err){
+            console.log(err);
+            result(true, err);
+        }else{
+            result(null, res);
+        }
+    })
+}
+
+
 
 
 

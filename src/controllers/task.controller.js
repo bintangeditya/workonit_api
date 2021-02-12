@@ -76,3 +76,11 @@ exports.updateTask = (req,res)=>{
         res.json({status: true, message: 'Success'});
     })
 }
+
+exports.getDetailTask = (req,res)=>{
+    TaskModel.getDetailTask(req.params.id_task, (err, task)=>{
+        if(err)
+        res.json({status: false, message: 'Gagal'});
+        res.json({status: true, message: 'Success', data : task});
+    })
+}
