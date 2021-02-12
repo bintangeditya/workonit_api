@@ -38,7 +38,8 @@ Task.createTask = (taskReqData, result) =>{
 }
 
 Task.updateTask = (task, result)=>{
-    dbConn.query("UPDATE book SET description =?, title =?, type =? WHERE id_book =?", [book.description,book.title,book.type,book.id_book], (err, res)=>{
+    dbConn.query("UPDATE task SET title_task =?,description_task =?,  due_date =? ,id_book =? WHERE id_task =?",
+     [task.title_task,task.description_task,task.due_date,task.id_book,task.id_task], (err, res)=>{
         if(err){
             console.log(err);
             result(true, err);
@@ -46,6 +47,17 @@ Task.updateTask = (task, result)=>{
             result(null, res);
         }
     });
+}
+
+Task.deleteTask =   (id_task, result)=>{
+    dbConn.query('DELETE FROM task WHERE id_task=?', [id_task], (err, res)=>{
+        if(err){
+            console.log('deleteTask',err);
+            result(true, err);
+        }else{
+            result(null, res);
+        }
+    })
 }
 
 

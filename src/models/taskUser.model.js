@@ -9,9 +9,9 @@ var TaskUser = function(taskUser){
 
 }
 
-TaskUser.getTaskUser = (id_, result)=>{
+TaskUser.getTaskUserIdUserIdTask = (id_user,id_task, result)=>{
     console.log('userReqData');
-    dbConn.query('SELECT * FROM `book` NATURAL JOIN book_user WHERE id_user =?', id_user, (err, res)=>{
+    dbConn.query('SELECT * FROM task NATURAL JOIN task_user WHERE id_user =? AND id_task=?',[id_user,id_task], (err, res)=>{
         if(err){
             console.log(err);
             result(true, err);

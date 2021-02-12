@@ -53,12 +53,13 @@ exports.joinBook = (req, res)=>{
             res.json({status: false, message: 'Gagal'});
         if(!Object.keys(books).length)
             res.json({status: false, message: 'Id Book tidak ditemukan'});
-        if(books[0].type == 'private')
-            res.json({status: false, message: 'Book bertipe "private"'});
+        else
         UserBook.getUserBookByIdUserIdBook(req.body.id_user,req.body.id_book,(err,userBook)=>{
             if(err) 
             res.json({status: false, message: 'Gagal'});
             if(!Object.keys(userBook).length){
+                if(books[0].type == 'private')
+                res.json({status: false, message: 'Book bertipe Private'});
                 const reqUserBook = new UserBook(req.body)
                 reqUserBook.mute = 0
                 reqUserBook.status = 'member'
