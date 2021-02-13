@@ -89,7 +89,7 @@ exports.getDetailBook = (req, res)=>{
             const book = books[0]
             const bookMember = new BookMemberModel(book)
             bookMember.member = users
-            res.json({status: true, message: 'Success', data: bookMember});
+            res.json({status: true, message: 'Success', data: [bookMember]});
         })
         
     })
