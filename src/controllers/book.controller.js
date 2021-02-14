@@ -133,3 +133,7 @@ exports.updateUserBook = (req, res) =>{
         res.json({status: true, message: 'Success'});
     })
 }
+
+exports.getQod = (req,res)=>{
+    
+}
