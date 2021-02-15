@@ -14,7 +14,7 @@ var Task = function(task){
 
 Task.getTaskByIdBookIdUser = (idBook,idUser, result)=>{
     console.log('getUserByIdBook');
-    const longQuery = "SELECT  A.id_task, due_date ,title_task, CASE WHEN B.done_status IS NULL THEN 0 WHEN B.done_status IS NOT NULL Then B.done_status END AS 'done_status' FROM (SELECT task.id_task, due_date ,title_task, done_status FROM `task` LEFT OUTER JOIN task_user on task.id_task = task_user.id_task WHERE task_user.id_user IS NULL AND task.id_book = ?) AS A LEFT OUTER JOIN (SELECT task.id_task,done_status FROM `task` LEFT OUTER JOIN task_user on task.id_task = task_user.id_task WHERE task_user.id_user = ? AND task.id_book = ?) AS B ON A.id_task = B.id_task "
+    const longQuery = "SELECT  A.id_task, due_date, description_task ,title_task, CASE WHEN B.done_status IS NULL THEN 0 WHEN B.done_status IS NOT NULL Then B.done_status END AS 'done_status' FROM (SELECT task.id_task, description_task ,due_date ,title_task, done_status FROM `task` LEFT OUTER JOIN task_user on task.id_task = task_user.id_task WHERE task_user.id_user IS NULL AND task.id_book = ?) AS A LEFT OUTER JOIN (SELECT task.id_task,done_status FROM `task` LEFT OUTER JOIN task_user on task.id_task = task_user.id_task WHERE task_user.id_user = ? AND task.id_book = ?) AS B ON A.id_task = B.id_task "
     dbConn.query(longQuery, [idBook,idUser,idBook], (err, res)=>{
         if(err){
             console.log('Error : getTaskByIdBookIdUser', err);
